@@ -91,6 +91,18 @@ app.put("/messages/:id", (request, response) => {
   response.json(message);
 });
 
+app.delete("/messages/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const messageIndex = messages.findIndex((message) => message.id === id);
+  if (messageIndex === -1) {
+    return response.status(404).json({
+      error: "Message not found",
+    });
+  }
+  messages.splice(messageIndex, 1);
+  response.sendStatus(204);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
