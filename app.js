@@ -34,7 +34,7 @@ const messages = [
   },
 ];
 
-// Get all messages
+// Get all messages from the database (mysqlWorkbench) as arrow function
 app.get("/messages", (request, response) => {
   connection.query("SELECT * FROM messages ORDER BY id", (error, results) => {
     if (error) {
