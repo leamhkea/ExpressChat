@@ -71,6 +71,26 @@ app.post("/messages", (request, response) => {
   response.status(201).json(newMessage);
 });
 
+app.put("/messages/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const message = messages.find((message) => message.id === id);
+  if (!message) {
+    return response.status(404).json({
+      error: "Message not found",
+    });
+  }
+  const { user, text } = request.body ?? {};
+  if (typeof user !== "string" || typeof text !== "string" || user.trim() === "" || text.trim() === "") {
+    return response.status(400).json({
+      error: "Du skal udfylde både user og text",
+    });
+  }
+  message.user = user.trim();
+  message.text = text.trim();
+
+  response.json(message);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
