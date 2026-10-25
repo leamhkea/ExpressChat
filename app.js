@@ -35,10 +35,17 @@ const messages = [
 ];
 
 // Get all messages
-app.get("/messages", list_messages);
-function list_messages(request, response) {
-  response.send(messages);
-}
+app.get("/messages", (request, response) => {
+  connection.query("SELECT * FROM messages ORDER BY id", (error, results) => {
+    if (error) {
+      console.error("Error fetching messages:", error);
+      return response.status(500).json({
+        error: "Error fetching messages from the database",
+      });
+    }
+    response.json(results);
+  });
+});
 
 // Get a specific message by ID as arrow function
 app.get("/messages/:id", (request, response) => {
