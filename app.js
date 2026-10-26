@@ -44,6 +44,19 @@ app.get("/messages", (request, response) => {
 });
 
 //=====================================================
+//     Database connection setup
+//=====================================================
+
+// Get all messages from the database (mysqlWorkbench) as async function
+async function getMessages() {
+  const resp = await fetch("/messages");
+  const data = await resp.json();
+
+  messages = data;
+  return messages;
+}
+
+//=====================================================
 //    Get specific message by ID as arrow function
 //=====================================================
 
@@ -73,12 +86,7 @@ let nextId = 3;
 // Create a new message with post request
 app.post("/messages", (request, response) => {
   const { user, text } = request.body ?? {};
-  if (
-    typeof user !== "string" ||
-    typeof text !== "string" ||
-    user.trim() === "" ||
-    text.trim() === ""
-  ) {
+  if (typeof user !== "string" || typeof text !== "string" || user.trim() === "" || text.trim() === "") {
     return response.status(400).json({
       error: "Du skal udfylde både user og text",
     });
@@ -150,12 +158,7 @@ app.put("/messages/:id", (request, response) => {
     });
   }
   const { user, text } = request.body ?? {};
-  if (
-    typeof user !== "string" ||
-    typeof text !== "string" ||
-    user.trim() === "" ||
-    text.trim() === ""
-  ) {
+  if (typeof user !== "string" || typeof text !== "string" || user.trim() === "" || text.trim() === "") {
     return response.status(400).json({
       error: "Du skal udfylde både user og text",
     });
