@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import messages from "./messages.js";
+import connection from "./database.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //=====================================================
 //         Database connection setup
@@ -86,7 +87,12 @@ let nextId = 3;
 // Create a new message with post request
 app.post("/messages", (request, response) => {
   const { user, text } = request.body ?? {};
-  if (typeof user !== "string" || typeof text !== "string" || user.trim() === "" || text.trim() === "") {
+  if (
+    typeof user !== "string" ||
+    typeof text !== "string" ||
+    user.trim() === "" ||
+    text.trim() === ""
+  ) {
     return response.status(400).json({
       error: "Du skal udfylde både user og text",
     });
@@ -158,7 +164,12 @@ app.put("/messages/:id", (request, response) => {
     });
   }
   const { user, text } = request.body ?? {};
-  if (typeof user !== "string" || typeof text !== "string" || user.trim() === "" || text.trim() === "") {
+  if (
+    typeof user !== "string" ||
+    typeof text !== "string" ||
+    user.trim() === "" ||
+    text.trim() === ""
+  ) {
     return response.status(400).json({
       error: "Du skal udfylde både user og text",
     });
